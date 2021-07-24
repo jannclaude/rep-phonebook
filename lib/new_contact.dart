@@ -30,8 +30,6 @@ class _NewContactsState extends State<NewContacts> {
     TextEditingController()
   ];
 
-  bool isANumber = true;
-
   List<ContactSchema> contactsAppend = <ContactSchema>[];
 
   void saveContact() {
@@ -39,10 +37,9 @@ class _NewContactsState extends State<NewContacts> {
     for (int i = 0; i < _count; i++) {
       phoneList.add(_numberController[i].text);
     }
-    List<String> reversedPhone = phoneList.reversed.toList();
 
     setState(() {
-      contactsAppend.insert(0, ContactSchema(_lnameController.text, _fnameController.text, reversedPhone));
+      contactsAppend.insert(0, ContactSchema(_lnameController.text, _fnameController.text, phoneList));
     });
   }
 
@@ -136,10 +133,10 @@ class _NewContactsState extends State<NewContacts> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(1.5),
           child: SizedBox(
-            width: 28,
-            height: 28,
+            width: 54,
+            height: 54,
             child: _addRemoveButton(key == checkAdd, key),
           ),
         ),
@@ -161,7 +158,10 @@ class _NewContactsState extends State<NewContacts> {
               fillColor: Color(0xff1f1f1f),
               filled: true,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(8),
+                    bottomRight: Radius.circular(8)
+                ),
                 borderSide: BorderSide(
                   color: Color(0xff1f1f1f),
                 ),
@@ -199,7 +199,10 @@ class _NewContactsState extends State<NewContacts> {
         height: 28,
         decoration: BoxDecoration(
           color: (isTrue) ? Colors.green : Colors.redAccent,
-          borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8),
+                bottomLeft: Radius.circular(8)
+            ),
         ), // Add,remove phone numbers
         child: Icon(
           (isTrue) ? Icons.add : Icons.remove,

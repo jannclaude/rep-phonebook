@@ -61,8 +61,6 @@ class _UpdateContactsState extends State<UpdateContacts> {
   int key = 0, checkAdd = 0, listNumber = 1, _count = 1;
   String val = '';
 
-  bool isANumber = true;
-
   late TextEditingController _fnameController;
   late TextEditingController _lnameController;
 
@@ -73,6 +71,17 @@ class _UpdateContactsState extends State<UpdateContacts> {
   List<ContactSchema> contactsAppend = <ContactSchema>[];
 
   late Future<SpecificContact> futureSpecificContact;
+
+  void saveContact() {
+    List<String> phoneList = <String>[];
+    for (int i = 0; i < _count; i++) {
+      phoneList.add(_numberController[i].text);
+    }
+
+    setState(() {
+      contactsAppend.insert(0,ContactSchema(_lnameController.text, _fnameController.text, phoneList));
+    });
+  }
 
   @override
   void initState() {
@@ -120,9 +129,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
                 for (int i = 0; i < snapshot.data!.phone.length; i++) {
                   listphone.add(snapshot.data!.phone[i]);
                 }
-                List<String> reversedPhone = listphone.reversed.toList();
-                return _nameForms(
-                    fnameData!, lnameData!, reversedPhone, context);
+                return _nameForms(fnameData!, lnameData!, listphone, context);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -191,10 +198,10 @@ class _UpdateContactsState extends State<UpdateContacts> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(1.5),
           child: SizedBox(
-            width: 28,
-            height: 28,
+            width: 54,
+            height: 54,
             child: _addRemoveButton(key == checkAdd, key),
           ),
         ),
@@ -206,42 +213,29 @@ class _UpdateContactsState extends State<UpdateContacts> {
             keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.done,
             decoration: new InputDecoration(
+              prefixIcon: Icon(
+                Icons.phone,
+                size: 23,
+                color: Colors.white,
+              ),
               hintText: ' Phone Number',
               hintStyle: TextStyle(color: Colors.white38),
               fillColor: Color(0xff1f1f1f),
               filled: true,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomRight: Radius.circular(8)
+                ),
                 borderSide: BorderSide(
                   color: Color(0xff1f1f1f),
                 ),
-              ),
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              errorText: isANumber ? null : "Please enter a number",
-              //contentPadding: EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
-              prefixIcon: Icon(
-                Icons.phone,
-                size: 23,
-                color: Colors.white,
               ),
             ),
           ),
         ),
       ],
     );
-  }
-
-  void saveContact() {
-    List<String> phone = <String>[];
-    for (int i = 0; i < _count; i++) {
-      phone.add(_numberController[i].text);
-    }
-    List<String> reversedPhone = phone.reversed.toList();
-
-    setState(() {
-      contactsAppend.insert(0,ContactSchema(_lnameController.text, _fnameController.text, reversedPhone));
-    });
   }
 
   Widget _addRemoveButton(bool isTrue, int index) {
@@ -269,7 +263,10 @@ class _UpdateContactsState extends State<UpdateContacts> {
         height: 28,
         decoration: BoxDecoration(
           color: (isTrue) ? Colors.green : Colors.redAccent,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(8),
+            bottomLeft: Radius.circular(8)
+          ),
         ),
         child: Icon(
           (isTrue) ? Icons.add : Icons.remove,

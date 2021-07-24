@@ -19,6 +19,16 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
 
+    // checkToken() async {
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   String token = prefs.getString("token");
+    //   if (token != null) {
+    //     Navigator.of(context).pushNamedAndRemoveUntil('/contact list', (Route<dynamic> route) => false);
+    //   }
+    // }
+    //
+    // checkToken();
+
     return CupertinoPageScaffold(
         backgroundColor: Color(0xff303030),
         resizeToAvoidBottomInset: false,
@@ -89,15 +99,19 @@ class _AuthenticateState extends State<Authenticate> {
                     await login(email, password);
                     SharedPreferences prefs = await SharedPreferences.getInstance();
                     String token = prefs.getString("token");
+                    String respL = prefs.getString("responseL");
+                    var res = respL.replaceAll('msg', '');
+                    var resL = res.replaceAll(new RegExp(r'\W'),' ');
                     if (token != null) {
-                        Navigator.of(context)
-                            .pushNamedAndRemoveUntil('/contact list', (Route<dynamic> route) => false);
+                        Navigator.of(context).pushNamedAndRemoveUntil('/contact list', (Route<dynamic> route) => false);
                     } else {
                       Fluttertoast.showToast(
-                          msg: "Incorrect password or email",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIosWeb: 1
+                        msg: resL.toString(),
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Color(0xff303030),
+                        textColor: Colors.redAccent
                       );
                     }
                   },
@@ -111,28 +125,23 @@ class _AuthenticateState extends State<Authenticate> {
                       primary: Colors.white30,
                     ),
                     onPressed: () async {
+                      await signup(email, password);
                       SharedPreferences prefs = await SharedPreferences.getInstance();
                       String token = prefs.getString("token");
-                      print(token);
-                      if (token == null) {
-                        Fluttertoast.showToast(
-                            msg: "Incorrect password or email",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1
-                        );
-                      }if (!email.toString().contains("@") || !email.toString().contains(".com")){
-                        Fluttertoast.showToast(
-                            msg: "Incorrect password or email",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1
-                        );
-
+                      String respS = prefs.getString("responseS");
+                      var res = respS.replaceAll(new RegExp(r'msg'), '');
+                      var resS = res.replaceAll(new RegExp(r'\W'),' ');
+                      if (token != null) {
+                        Navigator.of(context).pushNamedAndRemoveUntil('/contact list', (Route<dynamic> route) => false);
                       } else {
-                        await signup(email, password);
-                        Navigator.of(context)
-                            .pushNamedAndRemoveUntil('/contact list', (Route<dynamic> route) => false);
+                        Fluttertoast.showToast(
+                            msg: resS.toString(),
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Color(0xff303030),
+                            textColor: Colors.redAccent
+                        );
                       }
                     }),
                 SizedBox(
@@ -174,6 +183,7 @@ login(email, password) async {
   var parse = jsonDecode(response.body);
 
   await prefs.setString('token', parse["token"]);
+  await prefs.setString('responseL', response.body.toString());
 }
 
 signup(email, password) async {
@@ -194,5 +204,5 @@ signup(email, password) async {
   var parse = jsonDecode(response.body);
 
   await prefs.setString('token', parse["token"]);
-  await prefs.setString('response', response.body.toString());
+  await prefs.setString('responseS', response.body.toString());
 }
