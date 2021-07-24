@@ -116,7 +116,7 @@ class _NewContactsState extends State<NewContacts> {
                   shrinkWrap: true,
                   itemCount: _count,
                   itemBuilder: (context, index) {
-                    return addPhone(index, context);
+                    return _phoneList(index, context);
                   }),
             ),
             SizedBox(
@@ -128,7 +128,7 @@ class _NewContactsState extends State<NewContacts> {
     );
   }
 
-  addPhone(int key, context) {
+  _phoneList(int key, context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -137,7 +137,7 @@ class _NewContactsState extends State<NewContacts> {
           child: SizedBox(
             width: 54,
             height: 54,
-            child: _addRemoveButton(key == checkAdd, key),
+            child: _addRemoveNum(key == checkAdd, key),
           ),
         ),
         Expanded(
@@ -173,7 +173,7 @@ class _NewContactsState extends State<NewContacts> {
     );
   }
 
-  Widget _addRemoveButton(bool isTrue, int index) {
+  Widget _addRemoveNum(bool isTrue, int index) {
     return InkWell(
       onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();

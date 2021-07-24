@@ -186,14 +186,14 @@ class _UpdateContactsState extends State<UpdateContacts> {
                 shrinkWrap: true,
                 itemCount: _count,
                 itemBuilder: (context, index) {
-                  return _row(index, context);
+                  return _phoneList(index, context);
                 }),
           ),
         ],
       ),
     );
   }
-  _row(int key, context) {
+  _phoneList(int key, context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -202,7 +202,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
           child: SizedBox(
             width: 54,
             height: 54,
-            child: _addRemoveButton(key == checkAdd, key),
+            child: _addRemoveNum(key == checkAdd, key),
           ),
         ),
         Expanded(
@@ -238,7 +238,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
     );
   }
 
-  Widget _addRemoveButton(bool isTrue, int index) {
+  Widget _addRemoveNum(bool isTrue, int index) {
     return InkWell(
       onTap: () {
         if (isTrue) {
