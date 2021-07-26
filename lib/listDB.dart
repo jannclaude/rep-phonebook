@@ -23,7 +23,6 @@ class contactValues {
 }
 
 class _PhonepageState extends State<Phonepage> {
-  List users = [];
 
   @override
   void initState() {
@@ -31,22 +30,18 @@ class _PhonepageState extends State<Phonepage> {
     this.fetchUser();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  List<dynamic> users = [];
+
+  String names(dynamic user) {
+    return user['fname'] + " " + user['lname'];
   }
 
   final String getUrl = "https://phonelist2.herokuapp.com/api/friends/";
-  List<dynamic> _users = [];
   fetchUser() async {
     var result = await http.get(Uri.parse(getUrl));
     setState(() {
-      _users = jsonDecode(result.body);
+      users = jsonDecode(result.body);
     });
-  }
-
-  String _names(dynamic user) {
-    return user['fname'] + " " + user['lname'];
   }
 
   Future<http.Response> deleteContact(String id) {
@@ -89,14 +84,14 @@ class _PhonepageState extends State<Phonepage> {
       body: Container(
         child: FutureBuilder<List<dynamic>>(
           builder: (context, snapshot) {
-            return _users.length != 0
+            return users.length != 0
                 ? RefreshIndicator(
               child: ListView.builder(
                   padding: EdgeInsets.all(12.0),
-                  itemCount: _users.length,
+                  itemCount: users.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Dismissible(
-                      key: Key(_users[index].toString()),
+                      key: Key(users[index].toString()),
                       direction: DismissDirection.horizontal,
                       background: Container(
                         margin: const EdgeInsets.all(10),
@@ -140,10 +135,10 @@ class _PhonepageState extends State<Phonepage> {
                         if(direction == DismissDirection.endToStart) {
                           Navigator.push(
                               context, MaterialPageRoute(builder: (context) =>
-                              UpdateContacts(specificID: _users[index]['_id'].toString())
+                              UpdateContacts(specificID: users[index]['_id'].toString())
                               )
                           );
-                          String editContact = _users[index]['fname'].toString() + " " + _users[index]['lname'].toString();
+                          String editContact = users[index]['fname'].toString() + " " + users[index]['lname'].toString();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('You are editing $editContact from your Contacts', style: TextStyle(color: Colors.black87)),
@@ -153,8 +148,8 @@ class _PhonepageState extends State<Phonepage> {
                           );
                           return false;
                         } else if (direction == DismissDirection.startToEnd) {
-                          String id = _users[index]['_id'].toString();
-                          String delContact = _users[index]['fname'].toString() + " " + _users[index]['lname'].toString();
+                          String id = users[index]['_id'].toString();
+                          String delContact = users[index]['fname'].toString() + " " + users[index]['lname'].toString();
                           deleteContact(id);
 
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -180,7 +175,7 @@ class _PhonepageState extends State<Phonepage> {
                               ),
                               tileColor: Color(0xff1f1f1f),
                               leading: Icon(Icons.account_circle_rounded, size: 30, color: Colors.white,),
-                              title: Text(_names(_users[index]),
+                              title: Text(names(users[index]),
                                 style: TextStyle(
                                     color: Color(0xffc8c8c8),
                                     fontWeight: FontWeight.normal,
@@ -188,7 +183,7 @@ class _PhonepageState extends State<Phonepage> {
                               ),
                               onTap: () {
                                 List<int> listNumbers = [];
-                                for (int i = 0; i < _users[index]['phone'].length; i++) {
+                                for (int i = 0; i < users[index]['phone'].length; i++) {
                                   listNumbers.add(i + 1);
                                 }
                                 showDialog<String>(
@@ -240,7 +235,7 @@ class _PhonepageState extends State<Phonepage> {
                                                           )
                                                       ),
                                                       TextSpan(
-                                                          text: " ${_names(_users[index])}",
+                                                          text: " ${names(users[index])}",
                                                           style: TextStyle (
                                                             fontSize: 30,
                                                             fontWeight: FontWeight.bold,
@@ -256,7 +251,7 @@ class _PhonepageState extends State<Phonepage> {
                                                       child: Column(
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: List.generate(
-                                                          listNumbers.length, (iter) {
+                                                          listNumbers.length, (counter) {
                                                           return Column(
                                                             children: [
                                                               SizedBox(
@@ -273,7 +268,7 @@ class _PhonepageState extends State<Phonepage> {
                                                                         )
                                                                     ),
                                                                     TextSpan(
-                                                                      text: "  ${_users[index]['phone'][iter].toString()}",
+                                                                      text: "  ${users[index]['phone'][counter].toString()}",
                                                                     )
                                                                   ],
                                                                 ),

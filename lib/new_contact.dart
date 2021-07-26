@@ -21,21 +21,12 @@ class contactValues {
 }
 
 class _NewContactsState extends State<NewContacts> {
-  int key = 0, checkAdd = 0, count = 1;
+
+  int key = 0, checkButton = 0, count = 1;
 
   late TextEditingController _lnameController, _fnameController;
   List<TextEditingController> _numberController = <TextEditingController>[TextEditingController()];
   List<contactValues> contactsAppend = <contactValues>[];
-
-  void saveContact() {
-    List<String> phoneList = <String>[];
-    for (int i = 0; i < count; i++) {
-      phoneList.add(_numberController[i].text);
-    }
-    setState(() {
-      contactsAppend.insert(0, contactValues(_lnameController.text, _fnameController.text, phoneList));
-    });
-  }
 
   @override
   void initState() {
@@ -52,19 +43,19 @@ class _NewContactsState extends State<NewContacts> {
         title: Text('New Contact'),
         actions: [
           IconButton(
-              icon: Icon(
-                Icons.save_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                saveContact();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CheckScreen(
-                            todo: contactsAppend)),
-                        (_) => false);
-              }
+            icon: Icon(
+              Icons.save_rounded,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              saveContact();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CheckScreen(
+                  todo: contactsAppend)),
+                  (_) => false);
+            }
           )
         ],
       ),
@@ -120,6 +111,16 @@ class _NewContactsState extends State<NewContacts> {
     );
   }
 
+  void saveContact() {
+    List<String> phoneNums = <String>[];
+    for (int i = 0; i < count; i++) {
+      phoneNums.add(_numberController[i].text);
+    }
+    setState(() {
+      contactsAppend.insert(0, contactValues(_lnameController.text, _fnameController.text, phoneNums));
+    });
+  }
+
   phoneList(int key, context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +130,7 @@ class _NewContactsState extends State<NewContacts> {
           child: SizedBox(
             width: 54,
             height: 54,
-            child: addRemoveNum(key == checkAdd, key),
+            child: addRemoveNum(key == checkButton, key),
           ),
         ),
         Expanded(
@@ -171,13 +172,13 @@ class _NewContactsState extends State<NewContacts> {
         if (isTrue) {
           setState(() {
             count++;
-            checkAdd++;
+            checkButton++;
             _numberController.insert(0, TextEditingController());
           });
         } else {
           setState(() {
             count--;
-            checkAdd--;
+            checkButton--;
             _numberController.removeAt(index);
           });
         }
@@ -209,7 +210,7 @@ class CheckScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<http.Response> fetchContact(String fname, String lname, List phoneList) {
+    Future<http.Response> postContact(String fname, String lname, List phoneList) {
       return http.post(
         Uri.parse('https://phonelist2.herokuapp.com/api/friends/add'),
         headers: <String, String>{
@@ -252,7 +253,7 @@ class CheckScreen extends StatelessWidget {
         body: ListView.builder(
           itemCount: todo.length,
           itemBuilder: (context, index) {
-            fetchContact(todo[index].fname, todo[index].lname,
+            postContact(todo[index].fname, todo[index].lname,
                 todo[index].phone);
             return Container(
               margin: EdgeInsets.all(18),

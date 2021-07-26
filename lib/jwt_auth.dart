@@ -18,7 +18,6 @@ class _AuthenticateState extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
-
     return CupertinoPageScaffold(
         backgroundColor: Color(0xff303030),
         resizeToAvoidBottomInset: false,

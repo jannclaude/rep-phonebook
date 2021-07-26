@@ -58,7 +58,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
   String specificID;
   _UpdateContactsState(this.specificID);
 
-  int key = 0, checkAdd = 0, count = 1;
+  int key = 0, checkButton = 0, count = 1;
 
   late TextEditingController _fnameController;
   late TextEditingController _lnameController;
@@ -72,13 +72,13 @@ class _UpdateContactsState extends State<UpdateContacts> {
   late Future<SpecificContact> fetchSpecificId;
 
   void saveContact() {
-    List<String> phoneList = <String>[];
+    List<String> phoneNums = <String>[];
     for (int i = 0; i < count; i++) {
-      phoneList.add(_numberController[i].text);
+      phoneNums.add(_numberController[i].text);
     }
 
     setState(() {
-      contactsAppend.insert(0,contactValues(_lnameController.text, _fnameController.text, phoneList));
+      contactsAppend.insert(0,contactValues(_lnameController.text, _fnameController.text, phoneNums));
     });
   }
 
@@ -199,7 +199,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
           child: SizedBox(
             width: 54,
             height: 54,
-            child: addRemoveNum(key == checkAdd, key),
+            child: addRemoveNum(key == checkButton, key),
           ),
         ),
         Expanded(
@@ -241,13 +241,13 @@ class _UpdateContactsState extends State<UpdateContacts> {
         if (isTrue) {
           setState(() {
             count++;
-            checkAdd++;
+            checkButton++;
             _numberController.insert(0, TextEditingController());
           });
         } else {
           setState(() {
             count--;
-            checkAdd--;
+            checkButton--;
             _numberController.removeAt(index);
           });
         }
