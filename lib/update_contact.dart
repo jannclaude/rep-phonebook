@@ -4,12 +4,12 @@ import 'dart:convert';
 
 import 'package:phonepage/listDB.dart';
 
-class ContactSchema {
+class contactValues {
   final String lname;
   final String fname;
   final List<String> phone;
 
-  ContactSchema(this.lname, this.fname, this.phone);
+  contactValues(this.lname, this.fname, this.phone);
 }
 
 Future<SpecificContact> fetchSpecificContact(String id) async {
@@ -58,8 +58,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
   String specificID;
   _UpdateContactsState(this.specificID);
 
-  int key = 0, checkAdd = 0, listNumber = 1, _count = 1;
-  String val = '';
+  int key = 0, checkAdd = 0, count = 1;
 
   late TextEditingController _fnameController;
   late TextEditingController _lnameController;
@@ -68,28 +67,27 @@ class _UpdateContactsState extends State<UpdateContacts> {
     TextEditingController()
   ];
 
-  List<ContactSchema> contactsAppend = <ContactSchema>[];
+  List<contactValues> contactsAppend = <contactValues>[];
 
-  late Future<SpecificContact> futureSpecificContact;
+  late Future<SpecificContact> fetchSpecificId;
 
   void saveContact() {
     List<String> phoneList = <String>[];
-    for (int i = 0; i < _count; i++) {
+    for (int i = 0; i < count; i++) {
       phoneList.add(_numberController[i].text);
     }
 
     setState(() {
-      contactsAppend.insert(0,ContactSchema(_lnameController.text, _fnameController.text, phoneList));
+      contactsAppend.insert(0,contactValues(_lnameController.text, _fnameController.text, phoneList));
     });
   }
 
   @override
   void initState() {
-    //ent initState
     super.initState();
     _fnameController = TextEditingController();
     _lnameController = TextEditingController();
-    futureSpecificContact = fetchSpecificContact(specificID);
+    fetchSpecificId = fetchSpecificContact(specificID);
   }
 
   Widget build(BuildContext context) {
@@ -120,7 +118,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
         child: Container(
           padding: const EdgeInsets.all(20.0),
           child: FutureBuilder<SpecificContact>(
-            future: futureSpecificContact,
+            future: fetchSpecificId,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 String? fnameData = Text(snapshot.data!.fname.toString()).data;
@@ -129,14 +127,13 @@ class _UpdateContactsState extends State<UpdateContacts> {
                 for (int i = 0; i < snapshot.data!.phone.length; i++) {
                   listphone.add(snapshot.data!.phone[i]);
                 }
-                return _nameForms(fnameData!, lnameData!, listphone, context);
+                return nameText(fnameData!, lnameData!, listphone, context);
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
               return Center(
                   child: CircularProgressIndicator(
-                      valueColor:
-                      AlwaysStoppedAnimation<Color>(Color(0xff1c1c1c))));
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xff1c1c1c))));
             },
           ),
         ),
@@ -144,7 +141,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
     );
   }
 
-  _nameForms(String contentfirst, String contentlast, List<String> listphone, context) {
+  nameText(String fnameCon, String lnameCon, List<String> listphone, context) {
     return Container(
       margin: EdgeInsets.all(18),
       child: Column(
@@ -154,7 +151,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
             controller: _fnameController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: contentfirst,
+              hintText: fnameCon,
               hintStyle: TextStyle(color: Colors.white38),
               fillColor: Color(0xff1f1f1f),
               filled: true,
@@ -169,7 +166,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
             controller: _lnameController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: contentlast,
+              hintText: lnameCon,
               hintStyle: TextStyle(color: Colors.white38),
               fillColor: Color(0xff1f1f1f),
               filled: true,
@@ -184,16 +181,16 @@ class _UpdateContactsState extends State<UpdateContacts> {
             child: ListView.builder(
                 reverse: true,
                 shrinkWrap: true,
-                itemCount: _count,
+                itemCount: count,
                 itemBuilder: (context, index) {
-                  return _phoneList(index, context);
+                  return phoneList(index, context);
                 }),
           ),
         ],
       ),
     );
   }
-  _phoneList(int key, context) {
+  phoneList(int key, context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -202,7 +199,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
           child: SizedBox(
             width: 54,
             height: 54,
-            child: _addRemoveNum(key == checkAdd, key),
+            child: addRemoveNum(key == checkAdd, key),
           ),
         ),
         Expanded(
@@ -238,21 +235,19 @@ class _UpdateContactsState extends State<UpdateContacts> {
     );
   }
 
-  Widget _addRemoveNum(bool isTrue, int index) {
+  Widget addRemoveNum(bool isTrue, int index) {
     return InkWell(
       onTap: () {
         if (isTrue) {
           setState(() {
-            _count++;
+            count++;
             checkAdd++;
-            listNumber++;
             _numberController.insert(0, TextEditingController());
           });
         } else {
           setState(() {
-            _count--;
+            count--;
             checkAdd--;
-            listNumber--;
             _numberController.removeAt(index);
           });
         }
@@ -278,7 +273,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
 }
 
 class CheckScreen extends StatelessWidget {
-  final List<ContactSchema> todo;
+  final List<contactValues> todo;
   final String specificID;
 
   const CheckScreen({Key? key, required this.todo, required this.specificID})
@@ -286,8 +281,7 @@ class CheckScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<http.Response> saveContact(
-        String fname, String lname, List phone) {
+    Future<http.Response> fetchContact(String fname, String lname, List phone) {
       return http.patch(
         Uri.parse('https://phonelist2.herokuapp.com/update/' + specificID),
         headers: <String, String>{
@@ -330,7 +324,7 @@ class CheckScreen extends StatelessWidget {
         body: ListView.builder(
           itemCount: todo.length,
           itemBuilder: (context, index) {
-            saveContact(todo[index].fname, todo[index].lname,
+            fetchContact(todo[index].fname, todo[index].lname,
                 todo[index].phone);
             return Container(
               margin: EdgeInsets.all(18),

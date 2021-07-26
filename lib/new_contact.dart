@@ -12,40 +12,33 @@ class NewContacts extends StatefulWidget {
   _NewContactsState createState() => _NewContactsState();
 }
 
-class ContactSchema {
+class contactValues {
   final String lname;
   final String fname;
   final List<String> phone;
 
-  ContactSchema(this.lname, this.fname, this.phone);
+  contactValues(this.lname, this.fname, this.phone);
 }
 
 class _NewContactsState extends State<NewContacts> {
-  int key = 0, checkAdd = 0, listNumber = 1, _count = 1;
-  String val = '';
+  int key = 0, checkAdd = 0, count = 1;
 
   late TextEditingController _lnameController, _fnameController;
-
-  List<TextEditingController> _numberController = <TextEditingController>[
-    TextEditingController()
-  ];
-
-  List<ContactSchema> contactsAppend = <ContactSchema>[];
+  List<TextEditingController> _numberController = <TextEditingController>[TextEditingController()];
+  List<contactValues> contactsAppend = <contactValues>[];
 
   void saveContact() {
     List<String> phoneList = <String>[];
-    for (int i = 0; i < _count; i++) {
+    for (int i = 0; i < count; i++) {
       phoneList.add(_numberController[i].text);
     }
-
     setState(() {
-      contactsAppend.insert(0, ContactSchema(_lnameController.text, _fnameController.text, phoneList));
+      contactsAppend.insert(0, contactValues(_lnameController.text, _fnameController.text, phoneList));
     });
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _lnameController = TextEditingController();
     _fnameController = TextEditingController();
@@ -112,11 +105,10 @@ class _NewContactsState extends State<NewContacts> {
             SizedBox(height: 30),
             Flexible(
               child: ListView.builder(
-                  reverse: true,
                   shrinkWrap: true,
-                  itemCount: _count,
+                  itemCount: count,
                   itemBuilder: (context, index) {
-                    return _phoneList(index, context);
+                    return phoneList(index, context);
                   }),
             ),
             SizedBox(
@@ -128,7 +120,7 @@ class _NewContactsState extends State<NewContacts> {
     );
   }
 
-  _phoneList(int key, context) {
+  phoneList(int key, context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -137,7 +129,7 @@ class _NewContactsState extends State<NewContacts> {
           child: SizedBox(
             width: 54,
             height: 54,
-            child: _addRemoveNum(key == checkAdd, key),
+            child: addRemoveNum(key == checkAdd, key),
           ),
         ),
         Expanded(
@@ -173,22 +165,19 @@ class _NewContactsState extends State<NewContacts> {
     );
   }
 
-  Widget _addRemoveNum(bool isTrue, int index) {
+  Widget addRemoveNum(bool isTrue, int index) {
     return InkWell(
       onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
         if (isTrue) {
           setState(() {
-            _count++;
+            count++;
             checkAdd++;
-            listNumber++;
             _numberController.insert(0, TextEditingController());
           });
         } else {
           setState(() {
-            _count--;
+            count--;
             checkAdd--;
-            listNumber--;
             _numberController.removeAt(index);
           });
         }
@@ -214,13 +203,13 @@ class _NewContactsState extends State<NewContacts> {
 }
 
 class CheckScreen extends StatelessWidget {
-  final List<ContactSchema> todo;
+  final List<contactValues> todo;
 
   const CheckScreen({Key? key, required this.todo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Future<http.Response> saveContact(String fname, String lname, List phoneList) {
+    Future<http.Response> fetchContact(String fname, String lname, List phoneList) {
       return http.post(
         Uri.parse('https://phonelist2.herokuapp.com/api/friends/add'),
         headers: <String, String>{
@@ -263,7 +252,7 @@ class CheckScreen extends StatelessWidget {
         body: ListView.builder(
           itemCount: todo.length,
           itemBuilder: (context, index) {
-            saveContact(todo[index].fname, todo[index].lname,
+            fetchContact(todo[index].fname, todo[index].lname,
                 todo[index].phone);
             return Container(
               margin: EdgeInsets.all(18),

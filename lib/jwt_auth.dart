@@ -19,16 +19,6 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
 
-    // checkToken() async {
-    //   SharedPreferences prefs = await SharedPreferences.getInstance();
-    //   String token = prefs.getString("token");
-    //   if (token != null) {
-    //     Navigator.of(context).pushNamedAndRemoveUntil('/contact list', (Route<dynamic> route) => false);
-    //   }
-    // }
-    //
-    // checkToken();
-
     return CupertinoPageScaffold(
         backgroundColor: Color(0xff303030),
         resizeToAvoidBottomInset: false,
@@ -63,7 +53,7 @@ class _AuthenticateState extends State<Authenticate> {
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: CupertinoTextField(
                       keyboardType: TextInputType.emailAddress,
-                      placeholder: "Email",
+                      placeholder: "Email/Username",
                       onChanged: (value) {
                         email = value;
                       },

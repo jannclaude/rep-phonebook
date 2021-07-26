@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
             statusBarColor: Color(0xff1f1f1f),
             systemNavigationBarColor: Color(0xff1f1f1f)
         )
-    );//color set to transperent or set your own color
+    );//color set to transparent or set your own color
 
     return MaterialApp(
         title: 'Phonepage',
@@ -28,8 +28,9 @@ class MyApp extends StatelessWidget {
             primaryColor: Color(0xff1f1f1f),
             textSelectionTheme: TextSelectionThemeData(
                 cursorColor: Color(0xffc8c8c8),
+                selectionColor: Color(0xffc8c8c8),
                 selectionHandleColor: Color(0xffc8c8c8),
-                selectionColor: Color(0xffc8c8c8)),
+            ),
             hintColor: Color(0xff303030)
         ),
         debugShowCheckedModeBanner: false,

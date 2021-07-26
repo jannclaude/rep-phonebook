@@ -14,12 +14,12 @@ class Phonepage extends StatefulWidget {
   _PhonepageState createState() => _PhonepageState();
 }
 
-class ContactSchema {
+class contactValues {
   final String lname;
   final String fname;
   final List<String> phone;
 
-  ContactSchema(this.lname, this.fname, this.phone);
+  contactValues(this.lname, this.fname, this.phone);
 }
 
 class _PhonepageState extends State<Phonepage> {
@@ -140,9 +140,16 @@ class _PhonepageState extends State<Phonepage> {
                         if(direction == DismissDirection.endToStart) {
                           Navigator.push(
                               context, MaterialPageRoute(builder: (context) =>
-                              UpdateContacts(specificID: _users[index]['_id'].toString()
+                              UpdateContacts(specificID: _users[index]['_id'].toString())
                               )
-                          )
+                          );
+                          String editContact = _users[index]['fname'].toString() + " " + _users[index]['lname'].toString();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('You are editing $editContact from your Contacts', style: TextStyle(color: Colors.black87)),
+                              backgroundColor: Colors.greenAccent,
+                              behavior: SnackBarBehavior.floating,
+                            ),
                           );
                           return false;
                         } else if (direction == DismissDirection.startToEnd) {
@@ -152,8 +159,9 @@ class _PhonepageState extends State<Phonepage> {
 
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('$delContact was deleted from your Contacts'),
+                              content: Text('You deleted $delContact from your Contacts'),
                               backgroundColor: Colors.redAccent,
+                              behavior: SnackBarBehavior.floating,
                             ),
                           );
                           return true;
@@ -207,7 +215,7 @@ class _PhonepageState extends State<Phonepage> {
                                                       WidgetSpan(
                                                         child: Icon(
                                                           Icons.arrow_back_rounded,
-                                                          size: 18,
+                                                          size: 19,
                                                           color: Colors.white,
                                                         ),
                                                       ),
@@ -270,12 +278,6 @@ class _PhonepageState extends State<Phonepage> {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              // Text(_users[index]['phone'][iter].toString(),
-                                                              //   style: TextStyle(
-                                                              //       color: Colors.white,
-                                                              //       fontSize:14
-                                                              //   ),
-                                                              // ),
                                                             ],
                                                           );
                                                         },
@@ -297,7 +299,7 @@ class _PhonepageState extends State<Phonepage> {
                       ),
                     );
                   }),
-              onRefresh: _getData,
+              onRefresh: getContacts,
             )
               : Center(
               child: CircularProgressIndicator(
@@ -311,7 +313,7 @@ class _PhonepageState extends State<Phonepage> {
     );
   }
 
-  Future<void> _getData() async {
+  Future<void> getContacts() async {
     setState(() {
       fetchUser();
     });
