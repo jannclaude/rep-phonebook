@@ -212,7 +212,7 @@ class CheckScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<http.Response> postContact(String fname, String lname, List phoneList) {
       return http.post(
-        Uri.parse('https://phonelist2.herokuapp.com/api/friends/add'),
+        Uri.parse('https://phonelist.onrender.com/api/friends/add'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

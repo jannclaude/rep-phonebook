@@ -13,7 +13,7 @@ class contactValues {
 }
 
 Future<SpecificContact> fetchSpecificContact(String id) async {
-  final response = await http.get(Uri.parse('https://phonelist2.herokuapp.com/api/friends/' + id));
+  final response = await http.get(Uri.parse('https://phonelist.onrender.com/api/friends/' + id));
   if (response.statusCode == 200) {
     return SpecificContact.fromJson(json.decode(response.body));
   } else {
@@ -283,7 +283,7 @@ class CheckScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future<http.Response> fetchContact(String fname, String lname, List phone) {
       return http.patch(
-        Uri.parse('https://phonelist2.herokuapp.com/update/' + specificID),
+        Uri.parse('https://phonelist.onrender.com/update/' + specificID),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

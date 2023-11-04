@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         title: 'Phonepage',
         theme: ThemeData(
             appBarTheme: AppBarTheme(
-              brightness: Brightness.dark,
+              systemOverlayStyle: SystemUiOverlayStyle.light,
             ),
             primaryColor: Color(0xff1f1f1f),
             textSelectionTheme: TextSelectionThemeData(

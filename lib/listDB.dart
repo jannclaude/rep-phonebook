@@ -36,7 +36,7 @@ class _PhonepageState extends State<Phonepage> {
     return user['fname'] + " " + user['lname'];
   }
 
-  final String getUrl = "https://phonelist2.herokuapp.com/api/friends/";
+  final String getUrl = "https://phonelist.onrender.com/api/friends/";
   fetchUser() async {
     var result = await http.get(Uri.parse(getUrl));
     setState(() {
@@ -46,7 +46,7 @@ class _PhonepageState extends State<Phonepage> {
 
   Future<http.Response> deleteContact(String id) {
     return http.delete(
-        Uri.parse('https://phonelist2.herokuapp.com/delete/' + id));
+        Uri.parse('https://phonelist.onrender.com/delete/' + id));
   }
 
   @override
@@ -161,6 +161,7 @@ class _PhonepageState extends State<Phonepage> {
                           );
                           return true;
                         }
+                        return null;
                       },
                       child: Card(
                         margin: const EdgeInsets.fromLTRB(0, 4, 0, 4),
@@ -301,7 +302,7 @@ class _PhonepageState extends State<Phonepage> {
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white24),
                 backgroundColor: Colors.white10,
               ));
-          },
+          }, future: null,
         ),
 
       ),

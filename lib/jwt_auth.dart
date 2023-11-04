@@ -87,8 +87,8 @@ class _AuthenticateState extends State<Authenticate> {
                   onPressed: () async {
                     await login(email, password);
                     SharedPreferences prefs = await SharedPreferences.getInstance();
-                    String token = prefs.getString("token");
-                    String respL = prefs.getString("responseL");
+                    String? token = prefs.getString("token");
+                    String respL = prefs.getString("responseL") ?? "default_value";
                     var res = respL.replaceAll('msg', '');
                     var resL = res.replaceAll(new RegExp(r'\W'),' ');
                     if (token != null) {
@@ -116,8 +116,8 @@ class _AuthenticateState extends State<Authenticate> {
                     onPressed: () async {
                       await signup(email, password);
                       SharedPreferences prefs = await SharedPreferences.getInstance();
-                      String token = prefs.getString("token");
-                      String respS = prefs.getString("responseS");
+                      String? token = prefs.getString("token");
+                      String respS = prefs.getString("responseS") ?? "default_value";
                       var res = respS.replaceAll(new RegExp(r'msg'), '');
                       var resS = res.replaceAll(new RegExp(r'\W'),' ');
                       if (token != null) {
@@ -155,7 +155,7 @@ class _AuthenticateState extends State<Authenticate> {
 }
 
 login(email, password) async {
-  var url = "https://phonelist2.herokuapp.com/login"; // iOS
+  final Uri url = Uri.parse("https://phonelist.onrender.com/login"); // iOS
 
   final http.Response response = await http.post(
     url,
@@ -176,7 +176,7 @@ login(email, password) async {
 }
 
 signup(email, password) async {
-  var url = "http://phonelist2.herokuapp.com/signup";
+  final Uri url = Uri.parse("https://phonelist.onrender.com/signup");
 
   final http.Response response = await http.post(
     url,
