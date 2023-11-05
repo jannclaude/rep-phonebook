@@ -23,8 +23,9 @@ This Android Studio project is a Contacts application built using Flutter and Da
 
 ## Features
 
+- Sign in/sign up for authentication.
 - Display a list of contacts.
-- Add new contacts with name, email, and phone number.
+- Add new contacts with name and phone number.
 - Update existing contact information.
 - Delete contacts.
 - Data persistence for storing contact information.
