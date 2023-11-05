@@ -13,11 +13,7 @@ The project's backend API is hosted on Heroku, providing the necessary services 
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Setup](#setup)
-- [Running the Application](#running-the-application)
-- [API Backend (Heroku)](#api-backend-heroku)
 - [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Overview
 
@@ -43,7 +39,6 @@ This Android Studio project is a Contacts application built using Flutter and Da
 
    ```bash
    git clone https://github.com/your-username/rep-phonebook.git
-
 
 2. Check installation of Flutter and Dart
    ```bash
