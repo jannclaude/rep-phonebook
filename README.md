@@ -1,10 +1,12 @@
 # Phonebook Android Application
+
+<p align="center">
+   <img width="200" alt="portfolio_view" src="https://github.com/jannclaude/rep-phonebook/blob/master/images/phonepage_icon.png">
+</p>
+
 The project is a Contacts application developed in Android Studio using the Flutter framework and Dart programming language. It allows users to manage their contact information, offering features such as displaying a list of contacts, adding new contacts with name, email, and phone number, updating existing contact details, and deleting contacts.
 
 The project's backend API is hosted on Heroku, providing the necessary services for interacting with the contact data. Users can access the contact information from the Phonebook app, and changes made are reflected in the API's data storage.
-
-<img width="200" align="center" alt="portfolio_view" src="https://github.com/jannclaude/rep-phonebook/blob/master/images/phonepage_icon.png">
-
 
 
 ## Table of Contents
