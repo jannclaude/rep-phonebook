@@ -1,5 +1,5 @@
-import 'dart:ui';
-import 'package:flutter/widgets.dart';
+// import 'dart:ui';
+// import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +19,7 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        backgroundColor: Color(0xff303030),
+        backgroundColor: const Color(0xff303030),
         resizeToAvoidBottomInset: false,
         child: Container(
             padding: const EdgeInsets.fromLTRB(13, 230, 13, 0),
@@ -82,7 +82,7 @@ class _AuthenticateState extends State<Authenticate> {
                 ElevatedButton(
                   child: Text('Log In'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
+                    backgroundColor: Colors.green,
                   ),
                   onPressed: () async {
                     await login(email, password);
@@ -111,7 +111,7 @@ class _AuthenticateState extends State<Authenticate> {
                 ElevatedButton(
                     child: Text('Sign Up'),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.white30,
+                      backgroundColor: Colors.white30,
                     ),
                     onPressed: () async {
                       await signup(email, password);

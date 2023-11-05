@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
+// import 'package:flutter/painting.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:ui';
+// import 'dart:ui';
 
 import 'package:phonepage/listDB.dart';
 
@@ -12,6 +12,7 @@ class NewContacts extends StatefulWidget {
   _NewContactsState createState() => _NewContactsState();
 }
 
+// ignore: camel_case_types
 class contactValues {
   final String lname;
   final String fname;
@@ -37,7 +38,7 @@ class _NewContactsState extends State<NewContacts> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff303030),
+      backgroundColor: const Color(0xff303030),
       appBar: AppBar(
         centerTitle: true,
         title: Text('New Contact'),

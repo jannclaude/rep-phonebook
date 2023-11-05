@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:phonepage/listDB.dart';
 
+// ignore: camel_case_types
 class contactValues {
   final String lname;
   final String fname;
@@ -92,7 +93,7 @@ class _UpdateContactsState extends State<UpdateContacts> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff303030),
+      backgroundColor: const Color(0xff303030),
       appBar: AppBar(
         centerTitle: true,
         title: Text('Update Contact'),

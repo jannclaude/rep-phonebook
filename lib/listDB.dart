@@ -14,6 +14,7 @@ class Phonepage extends StatefulWidget {
   _PhonepageState createState() => _PhonepageState();
 }
 
+// ignore: camel_case_types
 class contactValues {
   final String lname;
   final String fname;
@@ -52,7 +53,7 @@ class _PhonepageState extends State<Phonepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff303030),
+      backgroundColor: const Color(0xff303030),
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(
