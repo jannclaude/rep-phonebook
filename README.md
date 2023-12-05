@@ -35,8 +35,8 @@ This Android Studio project is a Contacts application built using Flutter and Da
 - [Flutter](https://flutter.dev/): An open-source UI software development toolkit for building natively compiled applications for mobile, web, and desktop from a single codebase.
 - [Dart](https://dart.dev/): The programming language used for Flutter development.
 - [Heroku](https://www.heroku.com/): A cloud platform that allows you to deploy and manage applications.
-- [NodeJS](https://nodejs.org/): JavaScript environment used to build the server-side of the Android application.
-- [Express](https://expressjs.com/): Backend framework used to develop the backend REST API.
+- [Node.js](https://nodejs.org/): JavaScript environment used to build the server-side of the Android application.
+- [Express.js](https://expressjs.com/): Backend framework used to develop the backend REST API.
 
 ## Setup
 
